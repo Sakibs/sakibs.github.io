@@ -6,26 +6,408 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 		<link rel="stylesheet" href="../highlight/styles/vs.css">
 		<script src="../highlight/highlight.pack.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>
+		<script>
+			$(document).ready(function(){
+				$('p.ans').hide();
+			    $("#showAns").click(function(){
+			        $(this).parent().children('p.ans').toggle();
+			    });
+			});
+		</script>
 	</head>
 	<body>
 		<div class="container">
 			<div class="row">
-				<h2>Week 5 Discussion Notes</h2>
+				<h2>Can I get Arrays!?</h2>
 				<hr>
 			</div>
 
-			<pre><code class="cpp">#include &lt;iostream&gt;
+			<div class = "row">	
+				<h3>What are Arrays?</h3>
+				Arrays are lists
+				<ul>
+				  <li>All items of the same type</li>
+				  <li>Each item has a position</li>
+				  <li>There is size limit</li>
+				</ul>
+				They make it easier to declare of a bunch of variables
+				<ul>
+					<li>Midterm scores</li>
+					<li>Names of students</li>
+					<li>Classroom numbers</li>
+					<li>... and much more</li>
+				</ul>
+
+
+				<hr>
+
+
+				<h3>Declaring Arrays</h3>
+				<ul>
+					<li>Arrays are contiguous in memory. they are put in one after another.</li>
+					<li>You can set values like you do for strings using the [ ] operator </li>
+					<li>To manually set initial values, you can initialize within brackets separated by commas. <br>{val1, val2, ... }</li>
+				</ul>
+				<pre><code class="cpp">// declare and initialize an array of ints
+int arr[5] = { 16, 2, 77, 40, 12071 }; 
+//Set element at index 2
+arr[2] = 75;
+
+//get element at index 0
+int x = arr[0]
+
+// declaring an array of strings
+string coolStrs[3] = {"yo", "sup", "hello"}</code></pre><br> 
+
+				The size of the array MUST be constant at compile time. 
+				<ul>
+					<li>Some computers will compile (Macs do)</li>
+					<li>But many compilers will throw an error (like in visual studio)</li>
+				</ul>
+				<pre><code class="cpp">#include &lt;iostream&gt
 
 using namespace std;
-int main(int argc, char *argv[]) {
-	for(int i=0; i < 10; i++)
-		cout << i << endl;
-	cout << "blah" << endl;
+int main() {
+	int size;
+	cin >> size;
+	
+	// size is not constant. Initializing with constant size will 
+	// lead to errors
+	int myArr[size];
+	
+	// if size of myArr is less than 10 BS (BAD STUFF!!) will happen!
+	myArr[10] = 999;
+}</code></pre><br>
+
+			You can declare arrays with other variables too. In the example below all variables and array elements are type <b>int</b>.
+			<pre><code>int var1, arr[5], var2 = 3;</code></pre><br>
+
+			Ways to initialzie arrays
+			<pre><code>// one way to do it
+int children[3] = {2, 12, 1};
+
+// why would you ever do this
+int children[3];
+children[0] = 2;
+children[1] = 12;
+children[2] = 1;
+
+// If you initialize while omitting the size of the array, 
+// it will automatically be declared to have the minimumum size needed
+int b[] = {5, 12, 11};
+// same as
+int b[3] = {5, 12, 11};</code></pre><br>
+
+
+			What happens if you use arrays without initializing them?
+			<pre><code>#include &lt;iostream&gt
+using namespace std;
+
+int main () {
+    int arr[3];
+    for(int i=0; i<3; i++)
+        cout << arr[i] << endl;
+}</code></pre> 
+			
+			<pre><code>#include &lt;iostream&gt
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+    string strs[3];
+    for(int i=0; i<3; i++)
+        cout << strs[i] << endl;
+}</code></pre>
+			Remember, strings are custom types so developers were able to set the default value to "" if it is uninitialized<br><br>
+			Also, strings themselves are arrays of chars!<br>
+			Its like using a 2D array. You can print the jth character of the ith string like in following
+
+			<pre><code>#include &lt;iostream&gt
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+	string strs[4] = {"Python", "Java", "Ruby", "Matlab"};
+
+	// You can print whole strings
+	cout << strs[3] << endl; // Matlab
+
+	// or individual characters from the strings
+	// This is a tribute to all you LoL fans
+	cout << strs[3][0]; // M
+	cout << strs[0][4]; // o
+	cout << strs[2][2]; // b
+	cout << strs[1][3]; // a
 }</code></pre>
 
 
 
+			<h4>Practice</h4>
+			Do the following compile? If they do is there anything wrong with the code?<br><br>
+			
+			<pre><code>#include &lt;iostream&gt
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+	int i[3];
+	i = {104, 101, 121};
+
+	cout << i[0] << endl;
+	cout << i[1] << endl;
+	cout << i[2] << endl;
+}</code></pre>
+			Initialization with brackets can only be done when declaring array
+			<br><br>
+
+			<pre><code>#include &lt;iostream&gt
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+	int i[2] = {1, 2, 3};
+
+	cout << i[0] << endl;
+	cout << i[1] << endl;
+}</code></pre>
+			Too many elements initialized
+			<br><br>
+
+  			<pre><code>#include &lt;iostream&gt
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+	int i[4] = {5, 5, 5};
+
+	cout << i[0] << endl;
+	cout << i[1] << endl;
+	cout << i[2] << endl;
+	// What's in here? :O
+	cout << i[3] << endl;
+}</code></pre>
+			Last element is initialized to 0
+			<br><br>
+
+			<pre><code>#include &lt;iostream&gt
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+	int i[3] = {};
+
+	cout << i[0] << endl;
+	cout << i[1] << endl;
+	cout << i[2] << endl;
+}</code></pre>
+			All elements set to 0
+			<br><br>
+  			
+
+  			<pre><code>int sampleArray[10];
+for (int index = 1; index <= 10; index++)
+	sampleArray[index] = 3*index;</code></pre>
+			Index range should be 0-9
+			<br><br>
+
+
+			<hr>
+
+
+			<h3>Arrays and Functions</h3>
+			If you have a function that takes in a variable, you can pass individual elements of arrays.
+			If you pass an element to a reference argument, it will be changed in the function
+			<pre><code>#include &lt;iostream&gt
+#include &lt;string&gt;
+using namespace std;
+
+// regular copy value parameter
+void f1(int i) {
+	i = 10;
+}
+
+// take reference parameter
+void f2(int &i) {
+	i = 10;
+}
+
+int main () {
+	int i[2] = {1, 2};
+
+	f1(i[1]);
+	cout << i[1] << endl;
+	
+	f2(i[1]);
+	cout << i[1] << endl;
+}</code></pre>
+
+			Continuing from the previous example, would this be valid?
+			<pre><code>	f1(i);</code></pre>
+
+			No, because <b>i</b> is the array. Its not in element. An example error is<br>
+			candidate function not viable: no known conversion from 'int [3]' to 'int &' for 1st argument<br><br>
+
+			To pass an entire array to a function, you need to use the <b>array parameter</b>
+			<pre><code>//Precondition: size is the declared size of the array a. 
+//The user will type in size integers.
+void print(int arr[], int size) {
+	for(int i=0; i < size; i++) {
+		cout << arr[i] << endl;
+	}
+}
+
+</code></pre><br>
+
+
+			The major difference between individual variable parameters and array parameters is that arrays are passed by reference.<br>
+			The array argument <b>points</b> to the location of the first element. Since the array is contiguous, we can access subsequent elements easily 
+			Any changes to arrays in function calls are permanent!
+
+			<pre><code>#include &lt;iostream&gt
+#include &lt;string&gt;
+using namespace std;
+
+// passing arrays as const ensures no element can be changed
+void print(const int a[], int size) {
+	for(int i=0; i < size; i++) {
+		cout << a[i] << endl;
+	}
+}
+
+void init(int a[], int size) {
+	for(int i=0; i < size; i++) {
+		a[i] = (i+1) * 10;
+	}
+}
+
+int main () {
+	int size = 10;
+	int arr[size];
+	
+	init(arr, size);
+	print(arr, size);
+}</code></pre>
+			Outputs
+			<pre><code>10
+20
+30
+40
+50
+60
+70
+80
+90
+100
+</code></pre>
+
+			In the example above, I take a const array in print. This is to make sure you do not modify values in functions that should not be modifying values<br><br>
+
+			Inconsistent use of the const parameter will result in errors!
+			<pre><code>double computeAverage(int a[], int numberUsed);
+//Returns the average of the elements in the first numberUsed 
+//elements of the array a. The array a is unchanged.
+
+void showDifference(const int a[],int numberUsed)
+{
+	double average = computeAverage(a, numberUsed);
+	cout << "Average of the " << numberUsed
+		<< " numbers = " << average << endl
+		<< "The numbers are:\n";
+	for (int index = 0; index < numberUsed; index++)
+		cout << a[index] << " differs from average by "
+		    << (a[index] - average) << endl;
+}
+</code></pre>
+
+			Even though computeAveraged does not modify its parameter, the compiler will think that it might try to since the parameter is not read in as const. 
+			Since computeAverage is not going to modify the array, declare the parameter as <b>const</b>.<br><br>
+
+			What is the output of the following?
+			<pre><code>#include &lt;iostream&gt
+#include &lt;string&gt;
+using namespace std;
+
+int addOne (int a[]);
+
+int main () {
+	int i[] = {1, 2};
+	addOne(i);
+
+	cout << i[0] << endl;
+}
+
+int addOne (int a[]) {
+	return a[0]++;
+}</code></pre><br><br>
+			
+
+			<hr>
+
+
+			<h3>Practice Problems</h3>
+
+			<!-- Problem 1 -->
+			Implement the following functions
+			<pre><code>/* 
+Finds first element in an array that is not <= the one before it. Return -1 if no such element.
+Give test cases to test this function
+
+ex: given:
+        0   1   2   3   4   5   6   7
+arr = {43, 34, 34, 21, 16, 29, 17,  8}
+return: 5
+*/
+int firstOutOfOrder(int arr[], int size);</code></pre><br>
+
+			<pre><code>/*
+Find the first negative element in an array. Return 0 if no negative is in the array.
+
+ex: given:
+arr = {3, 5, 1, -9, 2, -6, 4};
+return: -9
+*/
+int getFirstNegative(int arr[], int size);</code></pre><br>
+
+			<pre><code>// Implement the computeAverages function mentioned above</code></pre><br>
+
+			<pre><code>/*
+Get all the indexes of a wanted element in a given array. List possible test cases.
+
+given: 
+       0  1  2  3  4  5  6  7  8  9
+arr = {1, 2, 4, 3, 4, 5, 2, 7, 1, 4}
+wanted = 4
+return: {2, 4, 9}
+
+What should the function call look like?
+*/</code></pre><br>
+
+			<pre><code>// Remove an element at a given index</code></pre><br>
+
+
+			What is the following code doing
+			<pre><code>#include &lt;iostream&gt
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+	double mysteryCandy = 3.5;
+	// I ate half of a snickers :(
+
+	// Weird spacing for presentation
+	const int TYPE_COUNT = 3;
+	string candyTypes[] = {"Snickers", "Starburst", "Banana!"};
+
+	for (int i = 0; i < mysteryCandy; i++) {
+		cout << candyTypes[i % TYPE_COUNT] << endl;
+		candyTypes[i % TYPE_COUNT] = candyTypes[(i+1) % TYPE_COUNT];
+	}
+}</code></pre><br>	
+
+
+			</div>
 		</div>
 	</body>
 </html>
