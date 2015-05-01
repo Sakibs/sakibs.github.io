@@ -66,7 +66,7 @@ string coolStrs[3] = {"yo", "sup", "hello"}</code></pre><br>
 					<li>Some computers will compile (Macs do)</li>
 					<li>But many compilers will throw an error (like in visual studio)</li>
 				</ul>
-				<pre><code class="cpp">#include &lt;iostream&gt
+				<pre><code class="cpp">#include &lt;iostream&gt;
 
 using namespace std;
 int main() {
@@ -102,7 +102,7 @@ int b[3] = {5, 12, 11};</code></pre><br>
 
 
 			What happens if you use arrays without initializing them?
-			<pre><code>#include &lt;iostream&gt
+			<pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main () {
@@ -111,7 +111,7 @@ int main () {
         cout << arr[i] << endl;
 }</code></pre> 
 			
-			<pre><code>#include &lt;iostream&gt
+			<pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -124,7 +124,7 @@ int main () {
 			Also, strings themselves are arrays of chars!<br>
 			Its like using a 2D array. You can print the jth character of the ith string like in following
 
-			<pre><code>#include &lt;iostream&gt
+			<pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -140,14 +140,14 @@ int main () {
 	cout << strs[0][4]; // o
 	cout << strs[2][2]; // b
 	cout << strs[1][3]; // a
-}</code></pre>
+}</code></pre><br>
 
 
 
 			<h4>Practice</h4>
 			Do the following compile? If they do is there anything wrong with the code?<br><br>
 			
-			<pre><code>#include &lt;iostream&gt
+			<pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -162,7 +162,7 @@ int main () {
 			Initialization with brackets can only be done when declaring array
 			<br><br>
 
-			<pre><code>#include &lt;iostream&gt
+			<pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -175,7 +175,7 @@ int main () {
 			Too many elements initialized
 			<br><br>
 
-  			<pre><code>#include &lt;iostream&gt
+  			<pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -191,7 +191,7 @@ int main () {
 			Last element is initialized to 0
 			<br><br>
 
-			<pre><code>#include &lt;iostream&gt
+			<pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -209,8 +209,7 @@ int main () {
   			<pre><code>int sampleArray[10];
 for (int index = 1; index <= 10; index++)
 	sampleArray[index] = 3*index;</code></pre>
-			Index range should be 0-9
-			<br><br>
+			Index range should be 0-9<br>
 
 
 			<hr>
@@ -219,7 +218,7 @@ for (int index = 1; index <= 10; index++)
 			<h3>Arrays and Functions</h3>
 			If you have a function that takes in a variable, you can pass individual elements of arrays.
 			If you pass an element to a reference argument, it will be changed in the function
-			<pre><code>#include &lt;iostream&gt
+			<pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -265,7 +264,7 @@ void print(int arr[], int size) {
 			The array argument <b>points</b> to the location of the first element. Since the array is contiguous, we can access subsequent elements easily 
 			Any changes to arrays in function calls are permanent!
 
-			<pre><code>#include &lt;iostream&gt
+			<pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -325,7 +324,7 @@ void showDifference(const int a[],int numberUsed)
 			Since computeAverage is not going to modify the array, declare the parameter as <b>const</b>.<br><br>
 
 			What is the output of the following?
-			<pre><code>#include &lt;iostream&gt
+			<pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -340,7 +339,7 @@ int main () {
 
 int addOne (int a[]) {
 	return a[0]++;
-}</code></pre><br><br>
+}</code></pre>
 			
 
 			<hr>
@@ -388,7 +387,7 @@ What should the function call look like?
 
 
 			What is the following code doing
-			<pre><code>#include &lt;iostream&gt
+			<pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
