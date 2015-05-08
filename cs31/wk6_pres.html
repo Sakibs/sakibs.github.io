@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Week 6 Discussion</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../highlight/styles/vs.css">
+		<script src="../highlight/highlight.pack.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script>
+			$(document).ready(function(){
+				$('p.ans').hide();
+			    $("#showAns").click(function(){
+			        $(this).parent().children('p.ans').toggle();
+			    });
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<h2>Arrays Part 2 & C-Strings</h2>
+				<hr>
+			</div>
+
+
+			<div class = "row">	
+				<h3>A Raise to the Next Dimension!!</h3>
+
+				So far, we saw single dimension arrays. But it is possible to have 2D, 3D, ... ND arrays. <br>
+				Relax guys, you can sit down now.<br>
+
+				Multi dimensional arrays are useful for
+				<ul>
+					<li>matrix calculations</li>
+					<li>image representation</li>
+					<li>2D game maps</li>
+				</ul>
+
+				A 2D array is an array of arrays! You have a number of rows, all with the same number of columns. <br>
+
+				Initialization of a 2D array is similar to a 1D arrays. You can set the values when you declare it.
+
+				<pre><code>//Type arrayName[numberOfRows][numberOfColumn];
+
+int out_of_this_dimension[3][5];
+
+/*
+   0 1 2 3 4
+   _ _ _ _ _
+0 |_|_|_|_|_|
+1 |_|_|_|_|_|
+2 |_|_|_|_|_|
+
+Bask in the glory of my magnificient ASCII art! 
+*/
+
+int my2d[4][3] = {{22, 23, 10},
+            	  {15, 25, 13},
+            	  {20, 74, 67},
+            	  {11, 18, 14}};
+</code></pre><br>
+				
+				To access elements of a two dimensional array, you do it using a pair of indices for the row and column <br>
+
+				<pre><code>cout << A[1][2];      //print an array element
+A[1][2]=13;           // assign value to an array element
+cin >> A[1][2];       // input element</code></pre><br>
+				
+
+				To loop through all the elements of a 2D array you need two loops. Outer for the rows, inner for columns
+				<pre><code>int mat[3][5], row, col ;
+for (row = 0; row < 3; row++)
+  for (col = 0; col < 5; col++)
+    cin >> mat[row][col];
+</code></pre>
+
+				<h4>2D Arrays as Parameters</h4>
+
+				2D arrays can be passed to functions and, like regular arrays, they are passed by references so any changes to the array made during function calls are persistent.<br>
+				What is different is that you can omit the number of rows BUT you MUST specifiy the number of columns
+				<pre><code> void print(int A[][3],int N, int M);
+// ...
+// Somewhere in the main
+
+int arr[4][3];
+// initialize ...
+
+// call the print function
+print(arr, 4, 3);
+</code></pre>
+
+				<pre><code>// Here is a working example
+#include &lt;iostream&gt;
+using namespace std; 
+void print(int A[][3],int N, int M)
+{
+  for (R = 0; R < N; R++)
+    for (C = 0; C < M; C++)
+       cout << A[R][C];
+}
+
+int main ()
+{
+  int arr[4][3] ={{12, 29, 11},
+                  {25, 25, 13},
+                  {24, 64, 67},
+                  {11, 18, 14}};
+  print(arr,4,3);
+  return 0;
+}
+</code></pre>
+
+
+				<h4>2D Array Practice</h4>
+				Function to find the sum of two dimensional arrays A and B. Print the result as you go
+				<pre><code>void addition(int A[][20], int B[][20],int N, int M)</code></pre><br>
+
+				Function to find & display sum of rows & sum of cols. of a 2 dim. array A
+				<pre><code>void sumRowCol(int A[][20], int N, int M)</code></pre><br>
+
+				Function to do matrix multiplication between two <b>square</b> matrices. Only print out the result.
+				<pre><code>void multiply(int A[][20], int B[][20],int N, int M)</code></pre>
+
+
+				<hr>
+
+				Now that we looked at arrays, we are going to talk a little bit more about strings<br>
+				So far we have used C++ strings. If you noticed, you access characters in the string using the [] operator like an array.<br>
+				That is because C++ strings pretty much are arrays. They are a custom class packed with rich functions<br><br>
+				However, before there were C++ strings, there was C++. And before there was C++ there was C. Unfortunately C did not have C++ strings (sad face). It had C-strings. <br><br>
+
+				C-Strings are arrays of characters! <br>
+				We signify the end of the relevant portion of the C-String using a <b>zero-byte character ('\0')</b><br>
+
+				I have here a gorgeous presentation on C-Strings and how to work with them. Enjoy!<br><br>
+				<center><iframe src='https://onedrive.live.com/embed?cid=08E2FD9E34DC1895&resid=8E2FD9E34DC1895%216513&authkey=AEe3pqN49Kls11Q&em=2&wdAr=1.7777777777777777' width='610px' height='367px' frameborder='0'>This is an embedded <a target='_blank' href='http://office.com'>Microsoft Office</a> presentation, powered by <a target='_blank' href='http://office.com/webapps'>Office Online</a>.</iframe></center>
+
+
+		</div>
+	</body>
+</html>
