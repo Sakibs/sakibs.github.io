@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Week 6 Discussion</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../highlight/styles/vs.css">
+		<script src="../highlight/highlight.pack.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script>
+			$(document).ready(function(){
+				$('p.ans').hide();
+			    $("#showAns").click(function(){
+			        $(this).parent().children('p.ans').toggle();
+			    });
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<h2>Getting the Point(ers)</h2>
+				<hr>
+			</div>
+				<h3>A quick look at memory</h3>
+				<ul>
+					<li>So far all variables we declared were allocated on the stack</li>
+					<li>Stack variables live in scope</li>
+					<li>Memory used for variables is "automatically" reclaimed when program goes out of scope</li>
+				</ul>
+
+				Pointers are different
+				<ul>
+					<li>Allow flexibility in how much memory is used</li>
+					<li>Programmer is in control and responsible for <b>allocating</b> and <b>deallocating(freeing)</b> memory</li>
+					<li>A pointer is the memory address of a variable. It "points" to where the variable lives</li>
+					<li>Even though a memory address is a number, you cannot store it in an int or double type</li>
+				</ul>
+
+				Why do we have pointers?
+				<ul>
+					<li>Many C libraries used pointers to access memory directly</li>
+					<li>Pointers can be used for typecasting. They can talk about types and classes in terms of other types and classes</li>
+					<li>Make it easy to define complex data types like trees and linked lists</li>
+				</ul>
+
+				Lets look at an example
+				<pre><code>int pointedAt = 4;
+int* pointer = &pointedAt;
+cout << *pointer << endl;// the pointer is "dereferenced" here. This is like saying print the value at the address pointer points to </code></pre><br>
+				
+				To indicate a pointer, use * when declaring it.<br>
+				To get the address of a local variable, use &.<br>
+				Notice that the * operator has multiple uses. It can be used to declare a pointer type AND it can be used to "dereference" an address<br>
+				What will the following code do?
+				<pre><code>int i = 21;
+    
+cout << *&i << endl;
+</code></pre><br>
+
+				<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+  
+int main () {
+	int pointedAt = 444;
+	int* pointer = &pointedAt;
+
+	cout << "The value that pointer points at: " 
+	   << *pointer << endl;
+	cout << "The address that pointer points at: " 
+	   << pointer << endl;
+	cout << "The address where pointer is stored: " 
+	   << &pointer << endl;
+	// Will the above two be the same?
+}
+
+
+/* Sample output. Notice the pointer has it's own address
+The value that pointer points at: 444
+The address that pointer points at: 0x7fff5ea54bbc
+The address where pointer is stored: 0x7fff5ea54bb0
+*/</code></pre><br>
+
+				Be careful when you are declaring pointers in list format. 
+				<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+    // individuall specify the type
+    int pointedAt, *ptr;
+    
+    pointedAt = 111;
+    
+    ptr = &pointedAt;
+    cout << *ptr << endl;
+    
+    
+    // Declaring multiple pointers. The following are all pointers
+    int* p1, p2, p3;
+    
+    // when copying from pointer to pointer, do not need to use & operator
+    p1 = ptr;
+    cout << *p1 << endl;
+}</code></pre>
+
+		<pre><code>// would this be the same as above?
+int* pointedAt, *ptr;</code></pre><br>
+				
+				<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+    // Variables to be pointed at
+    int i = 0;
+    double d = 3.3;
+    bool b;
+    
+    // Pointers
+    
+    // An integer pointer that points to the memory address
+    // at which int i is located
+    int* iPtr = &i;
+    
+    // What's happening here?
+    double* dPtr = &*&d;
+    
+    // Is this going to be a problem? If so, when?
+    bool* bPtr = &b;
+    
+    // What's happening here?
+    *iPtr = 20;
+    
+    // What's happening here?
+    *&*dPtr = 3.33;
+    
+    b = (*iPtr % 2 == 0) || (*dPtr > 4);
+    
+    cout << i << endl;
+    cout << *iPtr << endl;
+    cout << d << endl;
+    cout << *dPtr << endl;
+    cout << b << endl;
+    cout << *bPtr << endl;
+}</code></pre><br>
+
+				Pointer Variables Used with =<br>
+				If p1 and p2 are pointer variables, then the statement <br>
+				p1 = p2;<br>
+				changes the value of p1 so that it is the memory address (pointer) in p2. A common way to think of this is that the assignment will change p1 so that it points to the same thing to which p2 is currently pointing. <br>
+
+				<img src="wk7/i1.png"><br>
+
+				What if a pointer points to nothing? <br>
+				Can we still set it's value?<br>
+
+				<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+    int* ptr;
+    *ptr = 999;
+    
+    cout << *ptr << endl;
+}</code></pre><br>
+
+				You might not get a compile or syntax error, but your program might crash!<br>
+				If your program doesn't crash, it will lead to undefined behavior and illegal memory accesses.<br>
+				In Xcode, I get EXC_BAD_ACCESS<br>
+				You can use the <b>nullptr</b> keyword to represent the pointer that points to nothing<br>
+				Using nullptr is safer because you are not pointing to random memory. <br>
+
+				<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+    int* ptr = nullptr;
+
+    if(ptr != nullptr) {
+        cout << *ptr << endl;
+    }
+}</code></pre><br>
+
+				But what if you did not want the pointer to point to nothing?<br><br>
+				You can also allocate memory<br>
+				This is done with the <b>new</b> keyword.<br>
+				Remember, free up space you borrowed using the <b>delete</b> keyword<br>
+				After allocating memory for the pointer, you can use the pointer like you did in the previous examples<br>
+
+				<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+    int* ptr = nullptr;
+
+    // Hey computer! Gimme some memory!
+    ptr = new int;
+    *ptr = 123;
+    
+    if(ptr != nullptr) {
+        cout << *ptr << endl;
+    }
+}</code></pre><br>
+
+
+			You can allocate individual elements as well as arrays! <br> 
+			The only additional thing you have to do is indicate how many elements you want <br>
+			This done by adding as follows<br>
+			<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+    int* ptr = nullptr;
+
+    // Hey computer! Gimme some memory!
+    ptr = new int[10];
+    
+    for(int i=0; i < 10; i++)
+        ptr[i] = i+1;
+    
+    for(int i=0; i < 10; i++) {
+        cout << ptr[i] << endl;
+    }
+    
+    // Thanks for the memories, take em back
+    delete[] ptr;
+}</code></pre><br>
+
+
+			Notice something interesting about the way we allocated the array??<br>
+
+			This is similar to the way we used regular arrays!!<br>
+
+			Could it be that the array identifiers are actually pointers? Then answer is YES!<br><br>
+
+			The pointer points to the address of the FIRST element in the array. <br>
+			We use bracket notation to get subsequent items. It is equivalent to saying dereference with offset. <br>
+			If ptr points to the address of the first element then <br>
+			<b>ptr[offset]</b>    is equivalent to saying     <b>*(ptr + offset)</b> <br>
+			<img src="wk7/i2.png"><br>
+
+			<br>
+			What if we have an array of ints. Unlike chars ints take up 4 bytes of space <br>
+			<img src="wk7/i3.png"><br
+
+			<br>
+			The offset in pointers scale to the size of the type. <br><br>
+
+			Do the following compile? If so, What do they print?
+			<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+int main () {
+    char c[] = "cat";
+    char* helper = c;
+    int len = strlen(c);
+    
+    for (int i = 0; i < len; i++) {
+        cout << helper[0] << endl;
+        helper++;
+    }
+}</code></pre>
+			
+			<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+    char c[] = "cat";
+    
+    for (char* helper = c; *helper != '\0'; helper++) {
+        // What happens when we just print out c?
+        cout << helper << endl;
+    }
+}</code></pre>
+
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+  
+int main () {
+	char c[] = "cat";
+
+	// Notice our new iterator increment...
+	for (char* helper = c; *helper != '\0'; helper = &helper[1]) {
+	    cout << helper[0] << endl;
+	}
+}</code></pre>
+
+ <pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+    char c[] = "cat";
+    
+    for (char* helper = c; *helper != '\0'; helper++) {
+        // What happens when we just print out c?
+        cout << *helper << endl;
+    }
+}</code></pre>
+			
+			<h3>Pointers and Functions</h3>
+			Now that we have pointers, we can do much more with functions<br>
+
+			We can accept pointers with different notations<br>
+			<pre><code>//Both i and p are pointer parameters
+void pointerFunc (int* i, int p[]) {
+     ...
+}
+</code></pre><br>
+
+			<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+int* findInt1 (int arr[], int len, int match) {
+    for (int i = 0; i < len; i++) {
+        if (arr[i] == match) {
+            return &arr[i];
+        }
+    }
+    // Case where there is no match!
+    return nullptr;
+};
+
+// See the difference?
+int* findInt2 (int* arr, int len, int match) {
+    for (int i = 0; i < len; i++) {
+        if (arr[i] == match) {
+            return &arr[i];
+        }
+    }
+    // Case where there is no match!
+    return nullptr;
+};
+
+int main () {
+    int i[] = {5, 6, 7, 8, 9};
+    int* ptr = findInt1(i, 5, 7);
+    
+    if (ptr != nullptr) {
+        cout << *ptr << endl;
+    } else {
+        cout << "null!" << endl;
+    }
+}</code></pre><br>
+
+
+			What will get printed?
+			<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void addStuff(int *p) {
+    *p = *p + 12;
+}
+
+int main () {
+    int i = 3;
+    int* ptr = &i;
+
+    addStuff(ptr);
+    cout << i << endl;
+}</code></pre>
+			
+			If you pass a pointer to a function like in the example above, it pointer p in addStuff is a copy of ptr in main.<br>
+			However ptr points to the address of i so the address is copied into p. When p changes the value it points to, it changes i because it points to i.<br><br>
+
+			Is it possible to pass a <b>pointer</b> to a function <b>by reference</b>?
+			<pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+void movePtr(int*& ptr) {
+    ptr = ptr + 2; // O_o'
+}
+
+int main() {
+    int arr[7] = {1,2,3,4,5,6,7};
+    int* ptr = arr;
+    
+    cout << *ptr << endl;
+    movePtr(ptr);
+    cout << *ptr << endl;
+    movePtr(ptr);
+    cout << *ptr << endl;
+}</code></pre><br>
+
+			One important thing to remember is that memory space for local variables is reclaimed after the function exits. if you set a pointer to a local variable, you will probably encounter undefined behavior.<br>
+
+			<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void voodoo(int*& p) {
+    int i = 123;
+    p = &i;
+    
+}
+int main () {
+    int i1 = 10;
+    int* ptr = &i1;
+    
+    voodoo(ptr);
+    cout << *ptr << endl; // ptr points to a location where values are subject to change
+    
+    int arr[7] = {1,2,3,4,5,6,7};
+    cout << *ptr << endl; // its not the same!
+}</code></pre>
+			<hr>
+
+			<h3>Pointers Practice</h3>
+			Reverse a C-String in place using only two ints
+			<br><br>
+			- Write a function ptrsToMinMax that takes an array of ints, the size of the array, and two pointers by reference. It sets one of the pointers to the position of the min and the other to the position of the max. Set them to nullptrs if the array is empty or invalid size.<br><br>
+			- Write a function that takes an array of strings and makes a 2D array of chars and stores the strings in them.
+			<br><br>
+			- What does the following print out?
+			<pre><code>void mystery(int *i, int *j) {
+	int *a = i;
+	
+	while(*a != 5) {
+		cout << *a;
+		int *x = i;
+		i = j;
+		j = x;
+		a = i+*a;
+	}
+}
+
+int main() {
+	int a1[] = {1, 2, 5, 6, 3, 4 ,0};
+	int a2[] = {4, 6, 1, 5, 2, 0, 3};
+	
+	mystery(a1, a2);
+}</code></pre>
+
+			<hr>
+			<h3>About Midterm 2</h3>
+			Midterm 2 will be next week. Be on the lookout for announcements. <br>
+			Some great practice problems can be found <a href="http://cs.ucla.edu/~forns/classes/fall-2014/cs-31/midterm-II-review.html">here</a><br>
+			<br>
+
+
+		</div>
+	</body>
+</html>
