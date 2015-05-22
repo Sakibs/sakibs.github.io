@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Week 8 Discussion</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../highlight/styles/vs.css">
+		<script src="../highlight/highlight.pack.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script>
+			$(document).ready(function(){
+				$('p.ans').hide();
+			    $("#showAns").click(function(){
+			        $(this).parent().children('p.ans').toggle();
+			    });
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<h2>Structs and Classes</h2>
+				<hr>
+			</div>
+
+<h3>A custom type</h3>
+So far, we have seen simple types like char, int, double<br>
+But we can only do so much with them<br><br>
+If you are making a game how do you go about representing things like characters, bosses, items. Notice that each of these<br>
+<ul>
+	<li>can be categorized, think of pokemon, all pokemon have the same stat fields</li>
+	<li>have "properties" that use basic types like number of items or damage</li>
+</ul>
+
+If you want to represent complex things, you can represent them using structures<br>
+C++ is an object oriented language!<br>
+- It allows you to define objects that hold data <br>
+- These objects can even perform specialized functions! <br><br>
+
+We have already been using custom objects through the C++ string class.<br>
+It hides the internals and gives us access to special functions that make our lives easier<br>
+
+<pre><code>#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string myStr = "I am such an awesome string";
+    
+    // you can't do this with a C-string
+    myStr.replace(13, 7, "cool");
+    
+    cout << myStr << endl; // I am such an cool string
+}</code></pre><br><br>
+
+To make a custom class, we use the struct object. <br>
+With structs, you can group together variables and functions in to single objects<br>
+The member functions and variables can be public or private<br>
+<ul>
+<li>Public: can be accessed by objects and functions <b>outside</b> the struct</li>
+<li>Private: exclusively for use with structs</li>
+</ul>
+<b>Important: </b>in <b>structs</b>, member functions and variables are <b>public by default</b><br><br>
+
+The syntax for declaring structs
+<pre><code class="cpp">struct &lt;structName&gt; {
+    &lt;member1_type&gt; &lt;member1_name&gt;;
+    &lt;member2_type&gt; &lt;member2_name&gt;;
+    // ...etc.
+}; // Remember the semicolon!</code></pre><br>
+
+Here are some working examples
+<pre><code>// A struct to represent cars
+struct Automobile
+{
+    int year;
+    int doors;
+    double horsePower;
+    char model;
+};
+
+
+// Struct to represnt pokemon
+struct Pkmn {
+    int number;
+    int level;
+    string name;
+    // A list of moves it uses
+    string moves[4];
+};</code></pre><br>
+
+
+When declaring structs, if your entire program uses the struct, it is better to declare them outside the main and before function prototypes. That way, they are compiled first and the rest of your program can use them.<br>
+But you can declare structs in the main function as well and you can  declare it in other structs too.<br>
+<pre><code>#include <iostream>
+using namespace std;
+
+struct Date {
+    int month;
+    int day;
+    int year;
+};
+
+int main() {
+    // create in instance of Date
+    Date today;
+    
+    // set it's variables
+    // use the dot operator to access member variables and functions
+    today.month = 5;
+    today.day = 22;
+    today.year = 2015;
+    
+    cout << "Today is ";
+    // Print the date all pretty
+    cout << today.month << "/" << today.day << "/" << today.year << endl;
+    // Today is 5/22/2015
+}</code></pre><br>
+
+Passing structs to functions is like passing other variables<br>
+<pre><code>#include <iostream>
+using namespace std;
+
+struct Date {
+    int month;
+    int day;
+    int year;
+};
+
+// Date is already declared so this prototype knows what
+// were talking about
+void printDate(Date d);
+
+int main() {
+    // create in instance of Date
+    Date today;
+    
+    // set it's variables
+    today.month = 5;
+    today.day = 22;
+    today.year = 2015;
+    
+    printDate(today);
+}
+
+void printDate(Date d) {
+    cout << "Today is ";
+    // Print the date all pretty
+    cout << d.month << "/" << d.day << "/" << d.year << endl;
+    // Today is 5/22/2015
+}</code></pre><br>
+
+You can have member functions within the struct that operate on its member variables<br>
+<pre><code>#include <iostream>
+using namespace std;
+
+struct Date {
+    int month;
+    int day;
+    int year;
+    
+    void printDate() {
+        cout << "Today is ";
+        // Notice we access member variables directly in member functions
+        cout << month << "/" << day << "/" << year << endl;
+    }
+};
+
+
+int main() {
+    // create in instance of Date
+    Date today;
+    // set it's variables
+    today.month = 5;
+    today.day = 22;
+    today.year = 2015;
+    
+    today.printDate();
+}</code></pre><br>
+
+Is the following going to compile? What will it print?
+<pre><code>#include <iostream>
+using namespace std;
+
+struct Date {
+    int month;
+    int day;
+    int year;
+};
+
+
+
+int main() {
+    // create in instance of Date
+    cout << Date.month << endl;
+    cout << Date.day << endl;
+    cout << Date.year << endl;
+}</code></pre>
+Remember to instantiate a variable of type struct. Then you can access and set it's values<br>
+
+There is a shorthand notation to declare the struct to instances immediately<br>
+<pre><code>#include <iostream>
+using namespace std;
+
+// declares struct IWantItAll
+struct IWantItAll {
+    int everything;
+    string hereYouAre;
+} iWantItNow; // instantiated to variable iWantItNow
+
+
+int main() {
+    // we can use iWantItNow here
+    iWantItNow.everything = 10000000;
+    iWantItNow.hereYouAre = "Dollars Yo!";
+    
+    cout << iWantItNow.everything << " " << iWantItNow.hereYouAre << endl;
+}</code></pre><br>
+
+You can even declare this in your main function!
+<pre><code>#include <iostream>
+using namespace std;
+
+int main() {
+    // declares struct IWantItAll
+    struct IWantItAll {
+        int everything;
+        string hereYouAre;
+    } iWantItNow; // instantiated to iWantItNow
+    
+    // we can use iWantItNow here
+    iWantItNow.everything = 10000000;
+    iWantItNow.hereYouAre = "Dollars Yo!";
+    
+    cout << iWantItNow.everything << " " << iWantItNow.hereYouAre << endl;
+}</code></pre><hr>
+
+<h3>Classes</h3>
+Classes are almost exactly the same as structs. There is one <b>BIG</b> key difference<br>
+** Member variables and functions are <b>private by default!!!</b><br>
+To account for that, we explicitly declare members public and private. The following example illustrate this
+<pre><code>class Mixed {
+// everything declared from this point is publicly accessible
+public:
+    int m_public1;
+    int m_public2;
+    void publicFun() {
+        cout << "Hello from public function!" << endl;
+    }
+
+    // Public functions in classes are able to access
+    // private member functions to do more important stuff
+    void callPrivateFun() {
+        privateFun();
+    }
+
+// everything declared from this point is privately accessible
+private:
+    string m_private2;
+    
+    void privateFun() {
+        m_public1 = 10;
+        m_public2 = 20;
+        m_private2 = "I set all variables!";
+        
+        cout << m_private2 << endl;
+    }
+};
+
+
+int main() {
+    Mixed funClass;
+    
+    // Do the following compile? What do they print?
+    funClass.publicFun();
+    funClass.privateFun();
+    funClass.callPrivateFun();
+    cout << funClass.m_public1 << funClass.m_public2 << endl;
+}
+</code></pre><br>
+
+Usually for better access to private members, we use getters and setters specifically for those variables<br>
+<pre><code>#include <iostream>
+using namespace std;
+
+class Message{
+public:
+    // getter
+    string getSecret() {
+        return secret;
+    }
+
+    // setter
+    void setSecret(string new_secret) {
+        secret = new_secret;
+    }
+    
+private:
+    string secret;
+};
+
+
+// Structs can also be passed by reference
+void rick(Message& m) {
+    // -__-
+    m.setSecret("Meet me at the flagpole after school");
+}
+
+void bob(Message& m) {
+    // O_o'
+    cout << m.getSecret() << endl;
+    cout << "Ur goin down Rick!" << endl;
+}
+
+int main() {
+    Message theSecret;
+    
+    rick(theSecret);
+    bob(theSecret);
+}
+
+// disclaimer: no program was hurt in the making of this example</code></pre><hr>
+
+<h3>Things you can do with classes and structs</h3>
+Since stucts and classes are like variables, you can use them inside other structs/classses as well<br>
+You can have arrays of classes and structs for faster operations<br>
+
+<pre><code>struct Move{
+    string name;
+    int damage;
+};
+
+class Pkmn{
+public:
+    // getters
+    int getNumber() { return number; }
+    int getLevel() { return level; }
+    string getName() { return name; }
+    
+    // setters
+    void setNumber(int n_num) { number = n_num; }
+    void setLevel(int n_lvl) { level = n_lvl; }
+    void setName(int n_name) { name = n_name; }
+    void setMoves(Move newMoves[]) {
+        for (int i; i < 4; i++) {
+            moves[i] = newMoves[i];
+        }
+    }
+    
+    void printMoves() {
+        for (int i=0; i < 4; i++) {
+            cout << moves[i].name << " : " << moves[i].damage << endl;
+        }
+    }
+private:
+    int number;
+    int level;
+    string name;
+    Move moves[4];
+};</code></pre><br>
+
+We an also have pointers to structs. But that will change how you access the variables.<br>
+When you have a pointer to a struct, you can defererence and access the value immediately with the -> operator.<br>
+<pre><code>#include <iostream>
+using namespace std;
+
+struct Date {
+    int month;
+    int day;
+    int year;
+};
+
+
+int main() {
+    Date today;
+    today.month = 5;
+    today.day = 22;
+    today.year = 2015;
+
+    Date* ptrToDate = &today;
+    // print the year after dereferencing it
+    cout << (*ptrToDate).year << endl;
+    
+    // Or use the -> operator to do it in one step
+    cout << ptrToDate->year << endl;
+}</code></pre><br>
+
+It works the same way for functions<br>
+<pre><code>#include <iostream>
+using namespace std;
+
+struct Date {
+    int month;
+    int day;
+    int year;
+    
+    void printDate() {
+        cout << "Today is ";
+        // Notice we access member variables directly in member functions
+        cout << month << "/" << day << "/" << year << endl;
+    }
+};
+
+
+int main() {
+    Date today;
+    today.month = 5;
+    today.day = 22;
+    today.year = 2015;
+
+    Date* ptrToDate = &today;
+    // call the printDate function after dereferencing the pointer
+    (*ptrToDate).printDate();
+    
+    // Or use the -> operator to do it in one step
+    ptrToDate->printDate();
+}</code></pre><hr>
+
+
+		</div>
+	</body>
+</html>
