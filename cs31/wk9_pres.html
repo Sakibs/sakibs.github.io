@@ -29,7 +29,7 @@ Today we will go over a couple of examples to illustrate how classes and pointer
 You have not used memory allocation but it is extremely powerful and will probably be used in project 7.<br><br>
 
 Here is a quick review of how to dynamically allocate memory and free it up<br> 
-<pre><code>#include <iostream>
+<pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main()
@@ -62,8 +62,8 @@ int main()
 
 Remember, pointers are not limited to primitive types. You can have pointers to any type including user defined types like string and even your own types! <br>
 
-<pre><code>#include <iostream>
-#include <string>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
 using namespace std;
 
 class Kewl {
@@ -101,8 +101,8 @@ int main()
 
 The code in the example above works fine but it can get really messy really quick!<br>
 The proper practice would be to have getters and setters to wrap around the pointer data members<br>
-<pre><code>#include <iostream>
-#include <string>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
 using namespace std;
 
 
@@ -179,8 +179,8 @@ Thankfully, we have constructors and destructors!<br>
 - Destructor is called when a local instance goes out of scope or when you explicitly delete a dynamic instance<br>
 <br>
 With constructors and destructors, we create a more robust implementation that is prone to minimal errors!<br>
-<pre><code>#include <iostream>
-#include <string>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
 using namespace std;
 
 
@@ -513,7 +513,7 @@ C++ has a "this" keyword that can be used in classes. You notice that you are ab
 
 This is a pointer to itself. Every object in c++ has access to its own address through the this pointer.
 
-<pre><code>#include <iostream>
+<pre><code>#include &lt;iostream&gt;
  
 using namespace std;
 
@@ -560,7 +560,7 @@ int main(void)
 
 
 <hr>
-<h3>The project 7 Warmup</h3>
+<h3>The project 7 Warmup<h3>
 We will walk through it together.
 
 		</div>

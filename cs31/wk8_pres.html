@@ -41,8 +41,8 @@ C++ is an object oriented language!<br>
 We have already been using custom objects through the C++ string class.<br>
 It hides the internals and gives us access to special functions that make our lives easier<br>
 
-<pre><code>#include <iostream>
-#include <string>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
 using namespace std;
 
 int main() {
@@ -93,7 +93,7 @@ struct Pkmn {
 
 When declaring structs, if your entire program uses the struct, it is better to declare them outside the main and before function prototypes. That way, they are compiled first and the rest of your program can use them.<br>
 But you can declare structs in the main function as well and you can  declare it in other structs too.<br>
-<pre><code>#include <iostream>
+<pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 struct Date {
@@ -119,7 +119,7 @@ int main() {
 }</code></pre><br>
 
 Passing structs to functions is like passing other variables<br>
-<pre><code>#include <iostream>
+<pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 struct Date {
@@ -152,7 +152,7 @@ void printDate(Date d) {
 }</code></pre><br>
 
 You can have member functions within the struct that operate on its member variables<br>
-<pre><code>#include <iostream>
+<pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 struct Date {
@@ -180,7 +180,7 @@ int main() {
 }</code></pre><br>
 
 Is the following going to compile? What will it print?
-<pre><code>#include <iostream>
+<pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 struct Date {
@@ -200,7 +200,7 @@ int main() {
 Remember to instantiate a variable of type struct. Then you can access and set it's values<br>
 
 There is a shorthand notation to declare the struct to instances immediately<br>
-<pre><code>#include <iostream>
+<pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 // declares struct IWantItAll
@@ -219,7 +219,7 @@ int main() {
 }</code></pre><br>
 
 You can even declare this in your main function!
-<pre><code>#include <iostream>
+<pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
@@ -281,7 +281,7 @@ int main() {
 </code></pre><br>
 
 Usually for better access to private members, we use getters and setters specifically for those variables<br>
-<pre><code>#include <iostream>
+<pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 class Message{
@@ -362,7 +362,7 @@ private:
 
 We an also have pointers to structs. But that will change how you access the variables.<br>
 When you have a pointer to a struct, you can defererence and access the value immediately with the -> operator.<br>
-<pre><code>#include <iostream>
+<pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 struct Date {
@@ -387,7 +387,7 @@ int main() {
 }</code></pre><br>
 
 It works the same way for functions<br>
-<pre><code>#include <iostream>
+<pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 struct Date {
