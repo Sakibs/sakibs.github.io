@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Week 9 Discussion</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../highlight/styles/vs.css">
+		<script src="../highlight/highlight.pack.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script>
+			$(document).ready(function(){
+				$('p.ans').hide();
+			    $("#showAns").click(function(){
+			        $(this).parent().children('p.ans').toggle();
+			    });
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<h2>Classes and Pointers: An application</h2>
+				<hr>
+			</div>
+
+So far we have seen how to implement classes and we also saw pointers.<br>
+Today we will go over a couple of examples to illustrate how classes and pointers can be used. <br>
+You have not used memory allocation but it is extremely powerful and will probably be used in project 7.<br><br>
+
+Here is a quick review of how to dynamically allocate memory and free it up<br> 
+<pre><code>#include <iostream>
+using namespace std;
+
+int main()
+{
+    // allocate space for a new int and get its value
+    int* size = new int;
+    cout << "Enter size: ";
+    cin >> *size;
+    
+    // allocate space for C-String of length specified by i
+    char* cStr = new char[*size];
+    
+    char start = 65; // 65 is the number that A maps to
+    
+    // Go through and set each element in cStr to an alphabet letter
+    for (int k=0; k < (*size)-1; k++) {
+        cStr[k] = start;
+        start++;
+    }
+    
+    // set the last element to zero byte
+    cStr[(*size)-1] = '\0';
+    
+    cout << cStr << endl;
+    
+    // program ending! Free up allocated memory
+    delete size;
+    delete[] cStr;
+}</pre></code><br>
+
+Remember, pointers are not limited to primitive types. You can have pointers to any type including user defined types like string and even your own types! <br>
+
+<pre><code>#include <iostream>
+#include <string>
+using namespace std;
+
+class Kewl {
+public:
+    // its like a pointer within a pointer!! INCEPTION BRU
+    string* tooCoolForSchool;
+}; // don't forget or else }:-)
+
+int main()
+{
+    Kewl* cool;
+    
+    // allocate space for cool
+    cool = new Kewl;
+    
+    // allocate space that the tooCoolForSchool POINTER points to
+    cool->tooCoolForSchool = new string;
+    
+    // NOTE!! remember if you have a variable to the class type,
+    // you can use the arrow (->) operator to dereference and assign at once
+    // instead of the dot (.) operator
+    // Equivalent statement with dot operator
+    // (*cool).tooCoolForSchool = new string;
+    
+    // remember tooCoolForSchool is a pointer too
+    *(cool->tooCoolForSchool) = "Here's a reality check... you aren't!";
+    
+    cout << *(cool->tooCoolForSchool) << endl;
+
+    // When deleting delete members first
+    delete cool->tooCoolForSchool;
+    // delete class object
+    delete cool;
+}</code></pre><br>
+
+The code in the example above works fine but it can get really messy really quick!<br>
+The proper practice would be to have getters and setters to wrap around the pointer data members<br>
+<pre><code>#include <iostream>
+#include <string>
+using namespace std;
+
+
+/*  class declaration  */
+class Kewl {
+public:
+    void initializeTooCoolForSchool();
+    void deleteTooCoolForSchool();
+    // use getters and setters to hide access to pointer
+    void setTooCoolForSchool(string str);
+    string getTooCoolForSchool();
+    
+private:
+    // make variable private
+    string* tooCoolForSchool;
+};
+/*  End class declaration  */
+
+
+
+/*  class implementation  */
+void Kewl::initializeTooCoolForSchool() {
+    tooCoolForSchool = new string;
+}
+
+void Kewl::setTooCoolForSchool(string str) {
+    *tooCoolForSchool = str;
+}
+
+string Kewl::getTooCoolForSchool() {
+    return *tooCoolForSchool;
+}
+
+void Kewl::deleteTooCoolForSchool() {
+    delete tooCoolForSchool;
+}
+
+/* End class implementation */
+
+
+int main()
+{
+    Kewl* cool;
+    // allocate space for cool
+    cool = new Kewl;
+    
+    // allocate space that the tooCoolForSchool POINTER points to
+    cool->initializeTooCoolForSchool();
+    
+    cool->setTooCoolForSchool("Here's a reality check... you aren't!");
+    
+    cout << cool->getTooCoolForSchool() << endl;
+    
+    // When deleting delete members first
+    cool->deleteTooCoolForSchool();
+    // delete class object
+    delete cool;
+}</code></pre><br>
+
+
+The previous example seems like a lot BUT it is actually more convenient and easier to understand than the first<br>
+There is still room for errors and improvements<br>
+What are some of the major flaws with this design? <br>
+- Memory leaks<br>
+- uninitialize pointer variables<br><br>
+
+We want to be able to initialize member variables right when we declare the instance of the class<br>
+We want to free allocated memory in the class when we delete the class automatically <br><br>
+
+Thankfully, we have constructors and destructors!<br>
+- Constructors are called when an instance is declared or allocated<br>
+- You can have multiple constructors to take different arguments<br>
+- Unlike constructors, there is only ONE destructor<br>
+- Destructor is called when a local instance goes out of scope or when you explicitly delete a dynamic instance<br>
+<br>
+With constructors and destructors, we create a more robust implementation that is prone to minimal errors!<br>
+<pre><code>#include <iostream>
+#include <string>
+using namespace std;
+
+
+/*  class declaration  */
+class Kewl {
+public:
+    // Constructors
+    Kewl();
+    Kewl(string val);
+    
+    // Destructor
+    ~Kewl();
+    
+    // use getters and setters to hide access to pointer
+    void setTooCoolForSchool(string str);
+    string getTooCoolForSchool();
+    
+private:
+    // make variable private
+    string* tooCoolForSchool;
+};
+/*  End class declaration  */
+
+
+
+/*  class implementation  */
+
+// Constructors
+Kewl::Kewl() {
+//    cout << "Constructor 1" << endl;
+    // set it to nullptr
+    tooCoolForSchool = nullptr;
+}
+
+Kewl::Kewl(string val) {
+//    cout << "Constructor 2" << endl;
+    // initialize and set it to val
+    tooCoolForSchool = new string;
+    *tooCoolForSchool = val;
+}
+
+Kewl::~Kewl(){
+//    cout << "Destructor" << endl;
+    // if tooCoolForSchool has been initialized, delete it!
+    if (tooCoolForSchool != nullptr) {
+        delete tooCoolForSchool;
+    }
+}
+
+void Kewl::setTooCoolForSchool(string str) {
+    if (tooCoolForSchool != nullptr) {
+        *tooCoolForSchool = str;
+    }
+    else {
+        tooCoolForSchool = new string;
+        *tooCoolForSchool = str;
+    }
+}
+
+string Kewl::getTooCoolForSchool() {
+    // check if not nullptr before returning
+    if (tooCoolForSchool != nullptr)
+        return *tooCoolForSchool;
+    else {
+        cout << "ERROR! tooCoolForSchool is not set, returning empty string" << endl;
+        return "";
+    }
+}
+/* End class implementation */
+
+
+int main()
+{
+    Kewl* cool;
+    Kewl* freezing;
+    
+    // constructor without arguments is called
+    cool = new Kewl;
+    
+    // constructor that takes string is called
+    freezing = new Kewl("Like a fridge!");
+    
+    // Let's see what happens
+    cout << cool->getTooCoolForSchool() << endl;
+    cout << freezing->getTooCoolForSchool() << endl;
+    
+    cool->setTooCoolForSchool("Here's a reality check... you aren't!");
+    
+    cout << cool->getTooCoolForSchool() << endl;
+    cout << freezing->getTooCoolForSchool() << endl;
+    
+    // delete class object. The destructor is automatically called before class is deleted
+    delete cool;
+    delete freezing;
+}</code></pre><br>
+
+<hr>
+<h3>Example: An Endless Array</h3>
+Now that we looked at classes and pointers and are familiar with them, we will go over a practical example!<br>
+So far, whenever we used arrays, we were limited to a size. What if we wanted an array that could go on forever!<br>
+It was not limited by size, it would automatially increase its size when it became full. <br><br>
+
+We will implement a class, MagicArray that does exactly that, but for ints only.<br>
+Lets think about what we will need to impement for this class<br>
+<ul>
+	<li>Data members, how will we hold data, pointers? How to keep track of size and index</li>
+	<li>Member functions, what functionality do we need?</li>
+	<li>Constructors: how many, what arguments</li>
+	<li>Destructor: what needs to be erased when the objects life ends</li>
+</ul>
+
+Here is the class declaration we will use<br>
+<pre><code>/* A custom class for an extendible array */
+class MagicArray {
+public:
+    MagicArray();
+    MagicArray(int size);
+    ~MagicArray();
+    // add an element to the end
+    bool put(int item);
+    // set an element in range to the value
+    bool set(int ix, int item);
+    // get how many valid items we have
+    int size();
+    // get item at index
+    int get(int ix);
+    
+private:
+    void double_capacity();
+    
+private:
+    int *m_array;
+    int m_size;
+    int m_ix;
+};</code></pre><br><br>
+
+Below is the implementation of all the member functions
+<pre><code>// Default constructor
+MagicArray::MagicArray() {
+    // 2 is the default size
+    m_ix = 0;
+    m_size = 2;
+    m_array = new int[m_size];
+}
+
+// custom constructor
+MagicArray::MagicArray(int size) {
+    // if error in size, print error default to size 2
+    if(size <= 0) {
+        cout << "Error: Array allocated with size <= 0, Defaulting to 2" << endl;
+        size = 2;
+    }
+    
+    m_ix = 0;
+    m_size = size;
+    m_array = new int[m_size];
+}
+
+// destructor
+MagicArray::~MagicArray() {
+    // free allocated array
+    delete [] m_array;
+}
+
+
+bool MagicArray::put(int item) {
+    bool extended = false;
+    // if m_ix is same as m_size array is full. double capacity before adding
+    if(m_ix == m_size) {
+        double_capacity();
+        extended = true;
+    }
+    // add the item at m_ix the increment m_ix
+    *(m_array + m_ix) = item;
+    m_ix++;
+    
+    return extended;
+}
+
+
+bool MagicArray::set(int ix, int item) {
+    // set the value only if it is in valid range.
+    // This prevents users from accessing memory out of valid bounds
+    if(ix < 0 || ix >= m_ix)
+        return false;
+    
+    *(m_array + ix) = item;
+    return true;
+}
+
+int MagicArray::size() {
+    // the index we are at indicates how many valid elements
+    // we have
+    return m_ix;
+}
+
+int MagicArray::get(int ix) {
+    return *(m_array + ix);
+}
+
+void MagicArray::double_capacity() {
+    // declare a new array of double the size
+    int new_size = m_size * 2;
+    int *old = m_array;
+    
+    // allocate space for new array
+    m_array = new int[new_size];
+    
+    // copy elements over from old array,
+    for(int i=0; i < m_size; i++) {
+        *(m_array + i) = *(old + i);
+    }
+    
+    // free old memory
+    delete[] old;
+    
+    // set new size of the array
+    m_size = new_size;
+}</code></pre><br>
+
+Some sample usage
+<pre><code>int main()
+{
+    MagicArray arr(4);
+    
+    for(int i=0; i < 10; i++)
+        arr.put(i*10);
+    
+    arr.set(0, 1);
+    arr.set(4, 4444);
+    arr.set(9, 9000);
+    
+    // These don't succeed because they are out of range
+    arr.set(-10, 123);
+    arr.set(100, 123);
+    if(!arr.set(10, 10))
+        cout << "It over 9000!" << endl;
+    
+    for(int i=0; i < 10; i++)
+        cout << arr.get(i) << endl;
+
+}</code></pre><br>
+
+
+From the previous example, we see the power of classes. They help simplify what would be otherwise complex code. We implement classes for modularity and to gather core functionality in one place. Once a class is implemented we can use it as many times as we need to. We can do error checking within the class and handle memory allocation and variable management through its internal functions.
+
+<hr>
+<h3>Tying Up Loose Ends</h3>
+<h4>An array of pointers D:</h4>
+We can declare an array of pointers and then allocate memory that each element points to. For example we could have an array of int* and each element would allocate an array too. The arrays dont have to be the same size.<br><br>
+
+ex: int* iArr[4];<br><br>
+
+int*<br>
+----<br>
+| o-|--><br>
+----<br>
+| o-|--><br>
+----<br>
+| o-|--><br>
+----<br>
+| o-|--><br>
+----<br><br>
+
+Then after allocating space for each of the pointers, it could look something like<br><br>
+
+int*<br>
+----<br>
+| o-|--> [1][2][3]<br>
+----<br>
+| o-|--> [44]<br>
+----<br>
+| o-|--> [67][100][230][-123][-253]<br>
+----<br>
+| o-|--> [14][1235]<br>
+----<br><br>
+
+The best use of this would be for project 5, where you can split a sentence up by spaces<br>
+
+<pre><code>// Return # tokens
+char** tokenize(const char str[], int& n_toks){
+    // since we are getting clean string, count number of spaces and zero byte
+    // to determine number of words.
+    
+    int i=0;
+    int n=0;
+    while (str[i] != '\0') {
+        if(str[i] == ' ')
+           n++;
+        i++;
+    }
+    // if it was not an empty string
+    if(i != 0)
+        n++;
+    else // empty string
+        return nullptr;
+    
+    char** tokens = new char*[n];
+
+    i=0;
+    // allocate space for first word
+    int cur = 0;
+    int col = 0;
+    char* word = new char[MAX_CHARS];
+    while (str[i] != '\0') {
+        if (str[i] == ' ') {
+            word[col] = '\0';
+            tokens[cur] = word;
+            word = new char[MAX_CHARS];
+            cur++;
+            col = 0;
+        }
+        else {
+            word[col] = str[i];
+            col++;
+            
+        }
+        i++;
+    }
+    word[col] = '\0';
+    tokens[cur] = word;
+    
+    
+    n_toks = n;
+    return tokens;
+}</code></pre><br>
+
+<h4>This</h4>
+C++ has a "this" keyword that can be used in classes. You notice that you are able to access the members of the classes directly. You don't see it but but internally it is referring to it self. You can use the "this" keyword to be more specific. If a class has a member variable m_size. You can access it directly with m_size or you can use this->m_size.
+
+This is a pointer to itself. Every object in c++ has access to its own address through the this pointer.
+
+<pre><code>#include <iostream>
+ 
+using namespace std;
+
+class Box
+{
+   public:
+      // Constructor definition
+      Box(double l=2.0, double b=2.0, double h=2.0)
+      {
+         cout <<"Constructor called." << endl;
+         length = l;
+         breadth = b;
+         height = h;
+      }
+      double Volume()
+      {
+         return length * breadth * height;
+      }
+      int compare(Box box)
+      {
+         return this->Volume() > box.Volume();
+      }
+   private:
+      double length;     // Length of a box
+      double breadth;    // Breadth of a box
+      double height;     // Height of a box
+};
+
+int main(void)
+{
+   Box Box1(3.3, 1.2, 1.5);    // Declare box1
+   Box Box2(8.5, 6.0, 2.0);    // Declare box2
+
+   if(Box1.compare(Box2))
+   {
+      cout << "Box2 is smaller than Box1" << endl;
+   }
+   else
+   {
+      cout << "Box2 is equal to or larger than Box1" << endl;
+   }
+   return 0;
+}</code></pre>
+
+
+<hr>
+<h3>The project 7 Warmup</h3>
+We will walk through it together.
+
+		</div>
+	</body>
+</html>
