@@ -46,9 +46,9 @@ window.onload = function(){
 	for (i=0; i < translation.length; i++) {
 		console.log(i)
 		var table_cell = '<tr><td><div class="container">' + 
-							'<div class="row"><img src="imgs/line'+i+'.png" height="42"></div>' +
-							'<div class="row" style="color: #298A08">'+transliteration[i]+'</div>' +
-							'<div class="row" style="color: #BDBDBD">'+translation[i]+'</div>' +
+							'<div class="row col-xs-12"><img src="imgs/line'+i+'.png" height="42"></div>' +
+							'<div class="row col-xs-12" style="color: #298A08">'+transliteration[i]+'</div>' +
+							'<div class="row col-xs-12" style="color: #BDBDBD">'+translation[i]+'</div>' +
 						  '</div></td></tr>';
 		console.log(tbody);
 		tbody.innerHTML += table_cell;
