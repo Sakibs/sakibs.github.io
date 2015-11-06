@@ -28,17 +28,26 @@
 			<div class = "row">	
 				<h3>A Raise to the Next Dimension!!</h3>
 
-				So far, we saw single dimension arrays. But it is possible to have 2D, 3D, ... ND arrays. <br>
-				Relax guys, you can sit down now.<br>
+				So far, we saw single dimension arrays. But it is possible to have 2D arrays <br><br><br><br>
+
+				<h4>
+				What do we mean when we say 2D array? <br>
+				Why would we need 2D arrays? <br><br><hr><br><br>
+				</h4>
+
+				A 2D array is an array of arrays! You have a number of rows, all with the same number of columns. <br>
+
 
 				Multi dimensional arrays are useful for
 				<ul>
 					<li>matrix calculations</li>
-					<li>image representation</li>
 					<li>2D game maps</li>
 				</ul>
+				<br><br>
 
-				A 2D array is an array of arrays! You have a number of rows, all with the same number of columns. <br>
+				What do you need to know when declaring 2D arrays? Why is this information important?<br><br>
+
+
 
 				Initialization of a 2D array is similar to a 1D arrays. You can set the values when you declare it.
 
@@ -62,14 +71,14 @@ int my2d[4][3] = {{22, 23, 10},
             	  {11, 18, 14}};
 </code></pre><br>
 				
-				To access elements of a two dimensional array, you do it using a pair of indices for the row and column <br>
+				What do you need to access an element in a 2D array? <br>
 
-				<pre><code>cout << A[1][2];      //print an array element
+				<pre><code>cout << A[1][2];      //print an array element art row 1, column 2
 A[1][2]=13;           // assign value to an array element
 cin >> A[1][2];       // input element</code></pre><br>
 				
 
-				To loop through all the elements of a 2D array you need two loops. Outer for the rows, inner for columns
+				How many loops would you need to go through a 2D array?
 				<pre><code>int mat[3][5], row, col ;
 for (row = 0; row < 3; row++)
   for (col = 0; col < 5; col++)
@@ -80,6 +89,9 @@ for (row = 0; row < 3; row++)
 
 				2D arrays can be passed to functions and, like regular arrays, they are passed by references so any changes to the array made during function calls are persistent.<br>
 				What is different is that you can omit the number of rows BUT you MUST specifiy the number of columns
+				<h4>
+				Can anyone see why that is the case?
+			</h4>
 				<pre><code> void print(int A[][3],int N, int M);
 // ...
 // Somewhere in the main
@@ -120,22 +132,70 @@ int main ()
 				Function to find & display sum of rows & sum of cols. of a 2 dim. array A
 				<pre><code>void sumRowCol(int A[][20], int N, int M)</code></pre><br>
 
-				Function to do matrix multiplication between two <b>square</b> matrices. Only print out the result.
-				<pre><code>void multiply(int A[][20], int B[][20],int N, int M)</code></pre>
-
-
 				<hr>
 
 				Now that we looked at arrays, we are going to talk a little bit more about strings<br>
 				So far we have used C++ strings. If you noticed, you access characters in the string using the [] operator like an array.<br>
-				That is because C++ strings pretty much are arrays. They are a custom class packed with rich functions<br><br>
+				That is because C++ strings are very similar to arrays. They are a custom class packed with rich functions<br><br>
 				However, before there were C++ strings, there was C++. And before there was C++ there was C. Unfortunately C did not have C++ strings (sad face). It had C-strings. <br><br>
 
-				C-Strings are arrays of characters! <br>
-				We signify the end of the relevant portion of the C-String using a <b>zero-byte character ('\0')</b><br>
+				<h4>
+					What are strings composed of?
+				</h4>
 
-				I have here a gorgeous presentation on C-Strings and how to work with them. Enjoy!<br><br>
-				<center><iframe src='https://onedrive.live.com/embed?cid=08E2FD9E34DC1895&resid=8E2FD9E34DC1895%216513&authkey=AEe3pqN49Kls11Q&em=2&wdAr=1.7777777777777777' width='610px' height='367px' frameborder='0'>This is an embedded <a target='_blank' href='http://office.com'>Microsoft Office</a> presentation, powered by <a target='_blank' href='http://office.com/webapps'>Office Online</a>.</iframe></center>
+				C-Strings are arrays of characters! <br><br>
+
+				Suppose I want to make a C-String to hold words up to 10 characters like knickknack or lumberjack<br><br>
+
+				How long should I declare this char array variable to be? <br>
+
+				<pre><code>
+char word[10]; // allocate C-string to hold up to 10 character word
+				</code></pre>
+
+				Ok great, so we declared a variable to store all the characters of the longest word. What happens if I put the word "hello" in my variable? <br><br>
+
+
+				We see that we need a way to indicate until what index is a valid word stored in our C-String variable<br><br><br>
+
+				How do we signal the end of a C-String? <br><br>
+
+				<pre><code>
+char zero_byte = '\0';
+				</code></pre>
+
+
+				We can signal the end of a C-string with a special character called the zero byte '\0' <br><br>
+
+
+				Going back to the example above, we see that we need one more space to hold the zero byte. So we add 1 to the array size<br><br>
+				<pre><code>
+char word[11]; // allocate C-string to hold up to 10 character word + ending zero byte
+				</code></pre>
+
+				<h4>
+				What is the benefit of having a dedicated termination character? <br>
+				What are some downsides to relying on it?<br>
+				</h4>
+
+
+				<br><br>
+
+				Like arrays are several ways to initialize C-Strings. Continuing from the previous discussion about arrays can you think of proper ways to declare and initialze C-Strings? <br><br>
+
+				Be sure to think about the zero byte! <br>
+
+				<h4>Lets Practice what we know about C-Strings by writing our own library to make working with C-Strings easier</h4>
+				Well write a few functions in this library
+				<ul>
+					<li>Write a function my_str_len that takes only a C-string and prints the length of the valid portion of that string
+					</li>
+					<li>Write a function my_str_compare that takes 2 C-strings and returns true if they are equal</li>
+					<li>Write a function my_str_copy that takes 2 C-Strings, Source and Destination and copies the contents of source into Destination. (You can assume Destination will have enough space to hold all of Source)</li>
+					<li>Expand on the previous function and make a new one my_str_n_copy that copies n characters from Source into Destination</li>
+					<li>Write a function my_str_char_last that takes a string and a char and finds the last position of the char in the string</li>
+				</ul>
+				<br><br>
 
 
 		</div>
