@@ -47,7 +47,7 @@
 
 				Lets look at an example
 				<pre><code>int pointedAt = 4;
-int* pointer = &pointedAt;
+int* pointer = &pointedAt; // make pointer point to the address of the variable pointed at
 cout << *pointer << endl;// the pointer is "dereferenced" here. This is like saying print the value at the address pointer points to </code></pre><br>
 				
 				To indicate a pointer, use * when declaring it.<br>
@@ -71,16 +71,18 @@ int main () {
 	   << *pointer << endl;
 	cout << "The address that pointer points at: " 
 	   << pointer << endl;
+	cout << "The address where pointedAt is stored: " 
+	   << &pointedAt << endl;
 	cout << "The address where pointer is stored: " 
 	   << &pointer << endl;
-	// Will the above two be the same?
 }
 
 
 /* Sample output. Notice the pointer has it's own address
 The value that pointer points at: 444
-The address that pointer points at: 0x7fff5ea54bbc
-The address where pointer is stored: 0x7fff5ea54bb0
+The address that pointer points at: 0x7fff5fbff82c
+The address where pointerAt is stored: 0x7fff5fbff82c
+The address where pointer is stored: 0x7fff5fbff820
 */</code></pre><br>
 
 				Be careful when you are declaring pointers in list format. 
@@ -89,7 +91,7 @@ The address where pointer is stored: 0x7fff5ea54bb0
 using namespace std;
 
 int main () {
-    // individuall specify the type
+    // individually specify the type
     int pointedAt, *ptr;
     
     pointedAt = 111;
@@ -98,7 +100,7 @@ int main () {
     cout << *ptr << endl;
     
     
-    // Declaring multiple pointers. The following are all pointers
+    // In the following only p1 is a pointer. p2 and p3 are just regular ints
     int* p1, p2, p3;
     
     // when copying from pointer to pointer, do not need to use & operator
@@ -185,58 +187,23 @@ int main () {
         cout << *ptr << endl;
     }
 }</code></pre><br>
+    
+      You can even use an int pointer to point to an element in the array
 
-				But what if you did not want the pointer to point to nothing?<br><br>
-				You can also allocate memory<br>
-				This is done with the <b>new</b> keyword.<br>
-				Remember, free up space you borrowed using the <b>delete</b> keyword<br>
-				After allocating memory for the pointer, you can use the pointer like you did in the previous examples<br>
-
-				<pre><code>#include &lt;iostream&gt;
+      <pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
 int main () {
     int* ptr = nullptr;
-
-    // Hey computer! Gimme some memory!
-    ptr = new int;
-    *ptr = 123;
-    
-    if(ptr != nullptr) {
-        cout << *ptr << endl;
-    }
-}</code></pre><br>
+    int a[5] = {1, 2, 3, 4, 5};
+    // make ptr point to the address of the third element in the array
+    ptr = &a[3];
+    cout << *ptr << endl;
+}</code></pre>
 
 
-			You can allocate individual elements as well as arrays! <br> 
-			The only additional thing you have to do is indicate how many elements you want <br>
-			This done by adding as follows<br>
-			<pre><code>#include &lt;iostream&gt;
-#include &lt;string&gt;
-using namespace std;
-
-int main () {
-    int* ptr = nullptr;
-
-    // Hey computer! Gimme some memory!
-    ptr = new int[10];
-    
-    for(int i=0; i < 10; i++)
-        ptr[i] = i+1;
-    
-    for(int i=0; i < 10; i++) {
-        cout << ptr[i] << endl;
-    }
-    
-    // Thanks for the memories, take em back
-    delete[] ptr;
-}</code></pre><br>
-
-
-			Notice something interesting about the way we allocated the array??<br>
-
-			This is similar to the way we used regular arrays!!<br>
+			Notice something interesting about the way we got the address of the element in the array??<br>
 
 			Could it be that the array identifiers are actually pointers? Then answer is YES!<br><br>
 
@@ -420,37 +387,107 @@ int main () {
 			<hr>
 
 			<h3>Pointers Practice</h3>
-			Reverse a C-String in place using only two ints
-			<br><br>
 			- Write a function ptrsToMinMax that takes an array of ints, the size of the array, and two pointers by reference. It sets one of the pointers to the position of the min and the other to the position of the max. Set them to nullptrs if the array is empty or invalid size.<br><br>
-			- Write a function that takes an array of strings and makes a 2D array of chars and stores the strings in them.
-			<br><br>
-			- What does the following print out?
-			<pre><code>void mystery(int *i, int *j) {
-	int *a = i;
-	
-	while(*a != 5) {
-		cout << *a;
-		int *x = i;
-		i = j;
-		j = x;
-		a = i+*a;
-	}
-}
-
-int main() {
-	int a1[] = {1, 2, 5, 6, 3, 4 ,0};
-	int a2[] = {4, 6, 1, 5, 2, 0, 3};
-	
-	mystery(a1, a2);
-}</code></pre>
-
 			<hr>
 			<h3>About Midterm 2</h3>
 			Midterm 2 will be next week. Be on the lookout for announcements. <br>
-			Some great practice problems can be found <a href="http://cs.ucla.edu/~forns/classes/fall-2014/cs-31/midterm-II-review.html">here</a><br>
+			Make sure you pick a time <br>
+			<!-- Some great practice problems can be found <a href="http://cs.ucla.edu/~forns/classes/fall-2014/cs-31/midterm-II-review.html">here</a><br> -->
+			<br>
 			<br>
 
+			Here are some midterm practice problems
+1) Will the following compile? Why?
+<pre><code>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main () {
+      char c[] = "Testing";
+      string t = "Testing";
+  
+      cout << (c == t) << endl;
+}</code></pre>
+<pre><code>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+int main () {
+      char c[] = "Testing";
+      string t = "Testing";
+  
+      cout << (strcmp(c, t)) << endl;
+}</code></pre>
+
+2) The following function works for some arguments but not all. What would be some unsafe arguments?
+<pre><code>
+// Works just like substr for strings, except that the argument
+// c is mutated to the substring instead of returning a new substr
+void cstringSubstr (char c[], int start, int chars) {
+    int len = strlen(c);
+
+    // If the start pos is greater than the strlen, then
+    // just return the empty cstring
+    if (start >= len) {
+        c[0] = '\0';
+        return;
+    }
+
+    // Otherwise, start at the start index and keep copying
+    // the characters to the front of the cstring
+    for (int i = 0; i < chars; i++) {
+        c[i] = c[start + i];
+    }
+
+    // Don't forget to null terminate!
+    c[chars] = '\0';
+}
+</code></pre>
+Which of the below would be unsafe for the cstringSubstr function?
+<pre><code>
+// A
+char c[] = "testing";
+cstringSubstr(c, 0, 5);
+
+// B
+char c[] = "testing";
+cstringSubstr(c, 0, 7);
+
+// C
+char c[] = "testing\0";
+cstringSubstr(c, 0, 8);
+
+// D
+char c[] = "test\0ing\0";
+cstringSubstr(c, 1, 8);
+
+// E
+char c[] = "test";
+cstringSubstr(c, 2, 6);
+
+// F
+char c[] = {'t', 'e', 's', 't'};
+cstringSubstr(c, 0, 4);
+
+// G
+char c[] = {'t', 'e', 's', 't', '\0'};
+cstringSubstr(c, 1, 4);
+
+// H
+char c[] = "";
+cstringSubstr(c, 0, 1);
+
+// I
+char c[] = "\0";
+cstringSubstr(c, 1, 1);
+
+// J
+char c[] = "\0";
+cstringSubstr(c, 0, 2);
+ </code></pre> 
 
 		</div>
 	</body>
