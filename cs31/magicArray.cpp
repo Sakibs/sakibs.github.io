@@ -2,11 +2,11 @@
 using namespace std;
 
 /* A custom class for an extendible array */
-class MagicArray {
+class InfiniteArray {
 public:
-    MagicArray();
-    MagicArray(int size);
-    ~MagicArray();
+    InfiniteArray();
+    InfiniteArray(int size);
+    ~InfiniteArray();
     bool put(int item);
     bool set(int ix, int item);
     int size();
@@ -22,7 +22,7 @@ private:
 };
 
 // Default constructor
-MagicArray::MagicArray() {
+InfiniteArray::InfiniteArray() {
     // 2 is the default size
     m_ix = 0;
     m_size = 2;
@@ -30,7 +30,7 @@ MagicArray::MagicArray() {
 }
 
 // custom constructor
-MagicArray::MagicArray(int size) {
+InfiniteArray::InfiniteArray(int size) {
     // if error in size, print error default to size 2
     if(size <= 0) {
         cout << "Error: Array allocated with size <= 0, Defaulting to 2" << endl;
@@ -43,13 +43,13 @@ MagicArray::MagicArray(int size) {
 }
 
 // destructor
-MagicArray::~MagicArray() {
+InfiniteArray::~InfiniteArray() {
     // free allocated array
     delete [] m_array;
 }
 
 
-bool MagicArray::put(int item) {
+bool InfiniteArray::put(int item) {
     bool extended = false;
     // if m_ix is same as m_size array is full. double capacity before adding
     if(m_ix == m_size) {
@@ -64,7 +64,7 @@ bool MagicArray::put(int item) {
 }
 
 
-bool MagicArray::set(int ix, int item) {
+bool InfiniteArray::set(int ix, int item) {
     // set the value only if it is in valid range.
     // This prevents users from accessing memory out of valid bounds
     if(ix < 0 || ix >= m_ix)
@@ -74,17 +74,17 @@ bool MagicArray::set(int ix, int item) {
     return true;
 }
 
-int MagicArray::size() {
+int InfiniteArray::size() {
     // the index we are at indicates how many valid elements
     // we have
     return m_ix;
 }
 
-int MagicArray::get(int ix) {
+int InfiniteArray::get(int ix) {
     return *(m_array + ix);
 }
 
-void MagicArray::double_capacity() {
+void InfiniteArray::double_capacity() {
     // declare a new array of double the size
     int new_size = m_size * 2;
     int *old = m_array;
@@ -106,7 +106,7 @@ void MagicArray::double_capacity() {
 
 int main()
 {
-    MagicArray arr(4);
+    InfiniteArray arr(4);
     
     for(int i=0; i < 10; i++)
         arr.put(i*10);
@@ -123,5 +123,4 @@ int main()
     
     for(int i=0; i < 10; i++)
         cout << arr.get(i) << endl;
-
 }
