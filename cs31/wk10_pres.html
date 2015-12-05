@@ -122,11 +122,11 @@ int main( ) {
   fun(c, b);
 }</code></pre>
 
-<!-- <div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
+<div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
 All examples are valid.
 Implicit type coercion allows you pass parameters of compatible types
 </pre></div></div>
- -->
+
 <br>
 2) Are the following statments valid?
 <pre><code>char a, *b, c;
@@ -138,7 +138,7 @@ a = 500;
 *d = *b;
 *c = 'a';
 &3;</code></pre>
-<!-- <div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
+<div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
 c = e; - valid
 g = e; - valid
 a = 500; - valid
@@ -146,7 +146,7 @@ a = 500; - valid
 *c = 'a'; - invalid
 &3; - invalid
 </pre></div></div>
- -->
+
 
 <br>
 3) Design a movie class with the following members and functions. Implement the functions. Add private and public members as appropriate.
@@ -155,8 +155,53 @@ string title;
 int numActors;
 void addActor(Actor a);
 Actor* findActor(string name);
-void deleteActor(Actor* aptr);</code></pre><br>
+void deleteActor(Actor* aptr);</code></pre>
+<div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
+class Movie
+{
+public:
+  void addActor(Actor a);
+  Actor* findActor(string name);
+  void deleteActor(Actor* aptr);
 
+private:
+  Actor* cast[N];
+  string title;
+  int numActors;
+};
+
+void Movie::addActor(Actor a)
+{ 
+ cast[numActors]) = &a;
+  numActors++;
+}
+
+Actor* Movie::findActor(string name)
+{
+  for (int i = 0; i < numActors; i++)
+  {
+       if (cast[i]->name == name) // Assume actor is a struct that has field name
+              return cast[i];
+  }
+  return nullptr;
+}
+
+void Movie::deleteActor(Actor* aptr)
+{
+for (int i = 0; i < numActors; i++)
+{
+    // if match delete and shift down
+    if (cast[i] == aptr)
+    {
+        delete aptr;
+        for (int j = i + 1; j < numActors; j++)
+            cast[j - 1] = cast[j];
+        numActors--;
+    }
+}
+</pre></div></div>
+
+<br>
 4) what is the value of the expression?
 <pre><code>int i1, i2, *pi1, *pi2, **ppi;
 char c1, c2, *pc1, *pc2, **ppc;
@@ -168,8 +213,8 @@ pc1 = carr + 2;
 c2 = *pc1++;
 c1 = *pc1;
 ppc = &(pc1);
-pi2 = *ppi;</code></pre>
-<!-- <div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
+pc2 = *ppc;</code></pre>
+<div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
 i1 = 10; // i1 is 10
 pi1 = pi2 = &i1; // pi1 and pi2 both point to i1
 c1 = *pi1 + 1; // c1 is the char represented by decimal value 11
@@ -180,7 +225,7 @@ ppc = &(pc1); // ppc points to pc1
 pc2 = *ppi; // pc2 points to value that pc1 is pointing to
 </pre></div></div>
 
- -->
+
 <br>
 5) Identify the error and the type of error
 <pre><code>char letters[LEN];
@@ -191,11 +236,11 @@ letters[i] = "A";</code></pre>
 int i=0;
 for (i=0;i <= LEN;i++);
 letters[i] = 'A';</code></pre>
-<!-- <div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
+<div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
 first: characters must be surrounded by single quotes
 second: read past end of array 
 </pre></div></div>
- -->
+
 
 <br>
 6) Consider the following structs and classes. 
@@ -219,20 +264,32 @@ m.getActor(1)->name = "Joseph";
 Actor a3 = *a2;
 a3.age--;
 m.getActor(3) = &a3;</code></pre>
-<!-- <div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
-Actor a1 = {"Smallberg", 45}; // valid
-Movie m("CS31", 277); // valid
-m.cast = &a1; // invalid, private member, fix by adding a put function
-Actor* a2 = m.getActor(0); // valid
-*a2 = a1; // valid
-m.getActor(1)->name = "Joseph"; // assuming put function in place, we still did not add new actors. Should not be valid
-Actor a3 = *a2; // works but assigning junk values
-a3.age--; // works but changing junk values
-m.getActor(3) = &a3; // cannot assign return value of function
+<div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
+Actor a1 = {"Smallberg", 45};
+Movie m("CS31", 277);
+m.cast = &a1; // trying to access private variable.
+// Implement setter to put one actor at a time;
+
+Actor* a2 = m.getActor(0);
+*a2 = a1;
+m.getActor(1)->name = "Joseph"; // statement is valid, need to add another actor so
+//there is actor at position 1
+/*
+Actor b = {"sb2", 45};
+putActor(b);
+*/
+
+Actor a3 = *a2;
+a3.age--;
+m.getActor(3) = &a3;
+/* invalid, cannot assign to return value of function call directly.
+To fix store in temporary variable
+Actor* tmp = m.getActor(3);
+tmp = &a3;
+*/
 </pre></div></div><br>
 
- -->
-<br>
+
 7) What is the output?
 <pre><code>void something(int* p, int* &q) {
     *p = 5;
@@ -252,12 +309,11 @@ int main( ) {
     return 0;
 }
 </code></pre>
-<!-- <div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
+<div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
 70 30
 5 20
 </pre></div></div><br>
- -->
-<br>
+
 
 8) Will the following code compile? If it does what will happen? Is there undefined behavior? Can we fix it?
 <pre><code>struct builder {
@@ -282,10 +338,16 @@ int main( ) {
         favoriteLetter = 'B';
     }
 };</code></pre>
-<!-- <div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
-Doesn't compile, two constructors with same args, cant differentiate
+<div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
+- Doesn't compile, two constructors with same args, cant differentiate
+- Second error, statement below is ambiguous. 
+  string name = name;
+  To fix use 
+  this->name = name;
+
+- One thing that might seem like an error is redeclaration of variables. It is not an error. If you declare a class member variable in one if its functions, it will use the declaration done there because it is nearest in scope.
 </pre></div></div><br>
- -->
+
 <pre><code>struct dullExample {
     int i;
 
@@ -309,11 +371,9 @@ int main () {
         ptr++;
     }
 }</code></pre>
-<!-- <div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
+<div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
 Compiles but invalid!. We have array of pointers. All objects in location are located in different parts of the heap memory. Incrementing ptr does not move to next element of array, it makes it point to the next contiguous value which is junk. we need to use arr[j] to assing to ptr. Then we can do ptr->i properly.
 </pre></div></div><br>
- -->
-<br>
 
 9) The following code compiles perfectly. What is printed at each marked line?
 <pre><code>const int MAX_LENGTH = 50;
@@ -343,7 +403,7 @@ int main () {
     cout << ptr1 << endl;               // #7
     cout << *ptr1 << endl;              // #8
 }</code></pre>
-<!-- <div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
+<div class="example"><button class="btn btn-default">Answer</button><div class="solution"><pre>
 1. ARR
 2. RR
 3. R
@@ -353,9 +413,7 @@ int main () {
 7. LATED
 8. L</pre></div></div><br>
 
- -->
-<br>
- 
+
 10) Write a function that finds if a contiguous subset of an array adds up to sum. Contiguous meaning elements must be adjacent. If there are multiple subsets, return the first one.
 <pre><code>/* function declaration
 Results are stored in the subset array. 
